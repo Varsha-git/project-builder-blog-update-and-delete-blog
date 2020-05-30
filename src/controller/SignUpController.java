@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.UserDAO;
 import model.User;
-import utility.ConnectionManager;
 
 @WebServlet(urlPatterns= {"/signup"})
 public class SignUpController extends HttpServlet {
@@ -24,6 +23,7 @@ public class SignUpController extends HttpServlet {
        
     }
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //		System.out.println("Sign up Controller");
 //		Connection con=null;
@@ -39,6 +39,7 @@ public class SignUpController extends HttpServlet {
 		rd.forward(request,response);
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		
@@ -54,7 +55,13 @@ public class SignUpController extends HttpServlet {
 		user.setPassword(password);
 		UserDAO userdao=new UserDAO();
 		user.setDate(date);
-		int checkUser = userdao.signUp(user);
+		int checkUser = 0;
+		try {
+			checkUser = userdao.signUp(user);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		if(checkUser!=0)
 		{

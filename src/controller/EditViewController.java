@@ -20,7 +20,8 @@ import model.Blog;
 public class EditViewController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-  	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
   		try {
@@ -38,6 +39,7 @@ public class EditViewController extends HttpServlet {
 		
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		doGet(request, response);
@@ -46,7 +48,16 @@ public class EditViewController extends HttpServlet {
 			throws SQLException, ServletException, IOException {
 		BlogDaoImpl blogDAO = new BlogDaoImpl();
 		int id = Integer.parseInt(request.getParameter("id"));
-		Blog existingBlog = blogDAO.selectBlog(id);
+		Blog existingBlog = null;
+		try {
+			existingBlog = blogDAO.selectBlog(id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/blogListView.jsp");
 		request.setAttribute("bloglist", existingBlog);
 		dispatcher.forward(request, response);

@@ -17,6 +17,7 @@ public class DeleteBlogController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Delete Blog");
 		try {
@@ -32,6 +33,7 @@ public class DeleteBlogController extends HttpServlet {
 	}
 
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		doGet(request, response);
@@ -41,7 +43,12 @@ public class DeleteBlogController extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("id"));
 		
 		BlogDaoImpl blogDAO = new BlogDaoImpl();
-		blogDAO.deleteBlog(id);
+		try {
+			blogDAO.deleteBlog(id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		response.sendRedirect("allblogs");
 	}
 }

@@ -10,8 +10,9 @@ import utility.ConnectionManager;
 
 public class UserDAO implements UserDaoInterface {
 
-	public int signUp(User user) {
-		String INSERT_USERS_SQL = "INSERT INTO USERS(email, password)VALUES(?,?)";
+	@Override
+	public int signUp(User user) throws Exception {
+		String INSERT_USERS_SQL = "INSERT INTO userlogin(email, password)VALUES(?,?)";
 
 		int result = 0;
 		try
@@ -30,13 +31,20 @@ public class UserDAO implements UserDaoInterface {
 		return result;
 	}
 	
+	@Override
 	public boolean loginUser(User user) {
 		boolean status = false;
 		try{
-			Connection connection = ConnectionManager.getConnection();
+			Connection connection = null;
+			try {
+				connection = ConnectionManager.getConnection();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		
 				// Step 2:Create a statement using connection object
-		PreparedStatement preparedStatement = connection.prepareStatement("select * from users where email = ? and password = ? ");
+		PreparedStatement preparedStatement = connection.prepareStatement("select * from userlogin where email = ? and password = ? ");
 		
 			preparedStatement.setString(1, user.getEmail());
 			preparedStatement.setString(2, user.getPassword());

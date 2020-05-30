@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -22,11 +23,21 @@ public class ViewAllBlogController extends HttpServlet {
        
  
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("View All Blogs");
 		System.out.println("Getting all blog post");
 		BlogDaoImpl blogDAO = new BlogDaoImpl();
-		List<Blog> listBlog = blogDAO.selectAllBlogs();
+		List<Blog> listBlog = null;
+		try {
+			listBlog = blogDAO.selectAllBlogs();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for(Blog bloglist:listBlog) {
 			System.out.println(bloglist.getBlogId());
 			System.out.println(bloglist.getBlogTitle());
@@ -38,6 +49,7 @@ public class ViewAllBlogController extends HttpServlet {
 		rd.forward(request, response);
 	}
 	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request,response);
 	}

@@ -17,12 +17,14 @@ import model.Blog;
 public class AddNewBlogController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static int i = 0;
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Getting into Add New Blog");
 		RequestDispatcher rd=this.getServletContext().getRequestDispatcher("/WEB-INF/views/blogListView.jsp");
 		rd.forward(request, response);
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Entering do post");
 		String blogTitle = request.getParameter("title");
@@ -36,7 +38,12 @@ public class AddNewBlogController extends HttpServlet {
 		blog.setPostedOn(postedOn);
 		
 		BlogDaoImpl blogDao = new BlogDaoImpl();
-		blogDao.insertBlog(blog);
+		try {
+			blogDao.insertBlog(blog);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		response.sendRedirect("allblogs");
 		/*
 		 * RequestDispatcher rd=this.getServletContext().getRequestDispatcher(
